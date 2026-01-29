@@ -1,18 +1,28 @@
-import { sql } from "drizzle-orm";
-import { pgTable, text, varchar } from "drizzle-orm/pg-core";
+import { pgTable, text, serial, integer, boolean, timestamp } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
-export const users = pgTable("users", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  username: text("username").notNull().unique(),
-  password: text("password").notNull(),
+export const menuItems = pgTable("menu_items", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),
+  description: text("description").notNull(),
+  category: text("category").notNull(), // e.g., "Seafood", "Filipino Favorites"
+  imageUrl: text("image_url"),
 });
 
-export const insertUserSchema = createInsertSchema(users).pick({
-  username: true,
-  password: true,
+export const reviews = pgTable("reviews", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),
+  rating: integer("rating").notNull(), // 1-5
+  comment: text("comment").notNull(),
+  date: text("date").notNull(), // Keeping as string to match "4 months ago" style or actual date
 });
 
-export type InsertUser = z.infer<typeof insertUserSchema>;
-export type User = typeof users.$inferSelect;
+export const insertMenuItemSchema = createInsertSchema(menuItems).omit({ id: true });
+export const insertReviewSchema = createInsertSchema(reviews).omit({ id: true });
+
+export type MenuItem = typeof menuItems.$inferSelect;
+export type InsertMenuItem = z.infer<typeof insertMenuItemSchema>;
+
+export type Review = typeof reviews.$inferSelect;
+export type InsertReview = z.infer<typeof insertReviewSchema>;
