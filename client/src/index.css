@@ -1,41 +1,41 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&family=Caveat:wght@400;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&family=Caveat:wght@400;700&display=swap");
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --font-display: 'Playfair Display', serif;
-  --font-body: 'Lato', sans-serif;
-  --font-handwriting: 'Caveat', cursive;
+  --font-display: "Playfair Display", serif;
+  --font-body: "Lato", sans-serif;
+  --font-handwriting: "Caveat", cursive;
 
-  /* Ocean/Seafood inspired palette */
-  --background: 210 20% 98%;
-  --foreground: 215 25% 27%;
-  
-  /* Primary: Deep Ocean Blue */
-  --primary: 205 65% 35%;
-  --primary-foreground: 210 40% 98%;
-  
-  /* Secondary: Sandy/Warm Beige */
-  --secondary: 35 30% 94%;
-  --secondary-foreground: 215 25% 27%;
-  
-  /* Accent: Teal/Aqua */
-  --accent: 180 40% 50%;
-  --accent-foreground: 210 40% 98%;
-  
+  /* Prawn-inspired palette */
+  --background: 45 40% 98%;
+  --foreground: 20 20% 20%;
+
+  /* Primary: Prawn Red / Vibrant Coral */
+  --primary: 10 85% 55%;
+  --primary-foreground: 0 0% 100%;
+
+  /* Secondary: Sunny / Golden Yellow */
+  --secondary: 45 100% 50%;
+  --secondary-foreground: 20 20% 20%;
+
+  /* Accent: Small / Fresh Lime Green */
+  --accent: 142 65% 45%;
+  --accent-foreground: 0 0% 100%;
+
   /* Muted */
-  --muted: 210 20% 96%;
-  --muted-foreground: 215 16% 47%;
-  
+  --muted: 45 20% 94%;
+  --muted-foreground: 20 10% 45%;
+
   --destructive: 0 84% 60%;
-  --destructive-foreground: 210 40% 98%;
-  
-  --border: 214 20% 90%;
-  --input: 214 20% 90%;
-  --ring: 205 65% 35%;
-  
+  --destructive-foreground: 0 0% 100%;
+
+  --border: 45 20% 90%;
+  --input: 45 20% 90%;
+  --ring: 10 85% 55%;
+
   --radius: 0.75rem;
 }
 
@@ -44,7 +44,12 @@
     @apply bg-background text-foreground antialiased font-body;
   }
 
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     @apply font-display font-bold tracking-tight text-primary;
   }
 }
@@ -56,11 +61,15 @@ html {
 
 /* Custom Utilities */
 .text-shadow {
-  text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .text-shadow-lg {
-  text-shadow: 0 4px 8px rgba(0,0,0,0.25);
+  text-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
+}
+
+.map-white-theme {
+  filter: grayscale(1) invert(0.1) brightness(1.2) contrast(0.8) hue-rotate(180deg);
 }
 
 /* Subtle texture overlay for some sections */

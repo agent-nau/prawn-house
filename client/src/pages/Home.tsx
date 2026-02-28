@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { Link } from "wouter";
 import { ArrowRight, Star, MapPin, Clock, ChefHat, UtensilsCrossed } from "lucide-react";
 import { Navigation } from "@/components/Navigation";
@@ -7,13 +7,17 @@ import { useMenu } from "@/hooks/use-menu";
 import { useReviews } from "@/hooks/use-reviews";
 import { MenuItemCard } from "@/components/MenuItemCard";
 import { ReviewCard } from "@/components/ReviewCard";
+import { AppleMap } from "@/components/AppleMap";
 
 export default function Home() {
   const { data: menuItems, isLoading: menuLoading } = useMenu();
   const { data: reviews, isLoading: reviewsLoading } = useReviews();
 
-  // Filter highlights (e.g., just take the first 3 or specific ones)
   const highlights = menuItems?.slice(0, 3) || [];
+  
+  const { scrollY } = useScroll();
+  const opacity = useTransform(scrollY, [0, 400], [1, 0]);
+  const y = useTransform(scrollY, [0, 400], [0, -50]);
 
   return (
     <div className="min-h-screen bg-background font-body">
@@ -21,53 +25,56 @@ export default function Home() {
 
       {/* Hero Section */}
       <section className="relative h-screen flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 z-0">
-          {/* Unsplash: scenic ocean restaurant view */}
-          <img 
-            src="https://images.unsplash.com/photo-1533640924469-22d99db6273d?q=80&w=2070&auto=format&fit=crop"
-            alt="Prawn House View"
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70" />
-        </div>
+        <div 
+          className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat"
+          style={{ 
+            backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0.4), rgba(0,0,0,0.2), rgba(0,0,0,0.6)), url('https://i1.wp.com/www.projectlupad.com/wp-content/uploads/2019/10/White-Sand-Beach-at-Fiana-Beach-Resort-in-Opol-Misamis-Oriental-Copyright-to-Project-LUPAD-11.jpg?fit=1024%2C640&ssl=1')` 
+          }}
+        />
 
-        <div className="container relative z-10 px-4 md:px-6 text-center text-white max-w-4xl mx-auto mt-16">
+        <motion.div 
+          style={{ opacity, y }}
+          className="container relative z-10 px-4 md:px-6 text-center text-white max-w-4xl mx-auto mt-16"
+        >
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <span className="font-handwriting text-3xl md:text-5xl text-accent mb-4 block transform -rotate-2">
+            <span className="font-handwriting text-3xl md:text-5xl text-accent mb-4 block transform -rotate-2 drop-shadow-md">
               Welcome to Opol
             </span>
-            <h1 className="font-display text-5xl md:text-7xl lg:text-8xl font-bold mb-6 text-white drop-shadow-lg leading-tight">
+            <h1 className="font-display text-5xl md:text-7xl lg:text-8xl font-bold mb-6 text-white drop-shadow-2xl leading-tight">
               Prawn House
             </h1>
-            <p className="text-lg md:text-2xl font-light mb-8 max-w-2xl mx-auto text-white/90 leading-relaxed">
+            <p className="text-lg md:text-2xl font-light mb-8 max-w-2xl mx-auto text-white/90 leading-relaxed drop-shadow-lg">
               Fresh Filipino seafood favorites served with stunning views of Macajalar Bay.
             </p>
             <div className="flex flex-col md:flex-row gap-4 justify-center items-center">
               <Link 
                 href="/menu"
-                className="px-8 py-4 bg-primary hover:bg-primary/90 text-white rounded-full font-bold text-lg transition-all transform hover:-translate-y-1 shadow-lg shadow-primary/30 flex items-center gap-2"
+                className="px-8 py-4 bg-primary hover:bg-primary/90 text-white rounded-full font-bold text-lg transition-all transform hover:-translate-y-1 shadow-2xl shadow-primary/40 flex items-center gap-2 drop-shadow-lg"
               >
                 View Menu <ArrowRight size={20} />
               </Link>
               <Link
                 href="/contact"
-                className="px-8 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-white/30 rounded-full font-bold text-lg transition-all"
+                className="px-8 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-white/30 rounded-full font-bold text-lg transition-all shadow-2xl drop-shadow-lg"
               >
                 Book a Table
               </Link>
             </div>
           </motion.div>
-        </div>
+        </motion.div>
 
         {/* Floating Info Cards */}
-        <div className="absolute bottom-8 left-0 right-0 hidden md:block">
+        <motion.div 
+          style={{ opacity }}
+          className="absolute bottom-8 left-0 right-0 hidden md:block"
+        >
           <div className="container mx-auto px-4">
             <div className="grid grid-cols-3 gap-6 max-w-4xl mx-auto">
-              <div className="bg-white/90 backdrop-blur-md p-4 rounded-xl shadow-lg flex items-center gap-4">
+              <div className="bg-white/90 backdrop-blur-md p-4 rounded-xl shadow-2xl flex items-center gap-4">
                 <div className="p-3 bg-primary/10 rounded-full text-primary">
                   <Star fill="currentColor" size={24} />
                 </div>
@@ -76,7 +83,7 @@ export default function Home() {
                   <p className="text-xs text-muted-foreground">Based on 100+ Reviews</p>
                 </div>
               </div>
-              <div className="bg-white/90 backdrop-blur-md p-4 rounded-xl shadow-lg flex items-center gap-4">
+              <div className="bg-white/90 backdrop-blur-md p-4 rounded-xl shadow-2xl flex items-center gap-4">
                 <div className="p-3 bg-primary/10 rounded-full text-primary">
                   <Clock size={24} />
                 </div>
@@ -85,7 +92,7 @@ export default function Home() {
                   <p className="text-xs text-muted-foreground">10:00 AM - 10:00 PM</p>
                 </div>
               </div>
-              <div className="bg-white/90 backdrop-blur-md p-4 rounded-xl shadow-lg flex items-center gap-4">
+              <div className="bg-white/90 backdrop-blur-md p-4 rounded-xl shadow-2xl flex items-center gap-4">
                 <div className="p-3 bg-primary/10 rounded-full text-primary">
                   <MapPin size={24} />
                 </div>
@@ -96,7 +103,7 @@ export default function Home() {
               </div>
             </div>
           </div>
-        </div>
+        </motion.div>
       </section>
 
       {/* Intro Section */}
@@ -235,7 +242,7 @@ export default function Home() {
         <div className="container mx-auto px-4 md:px-6 relative z-10 text-center">
           <h2 className="font-display text-4xl md:text-6xl font-bold mb-8">Ready for a Feast?</h2>
           <p className="text-xl text-primary-foreground/90 max-w-2xl mx-auto mb-10">
-            Visit us today at the Bayside. Perfect for family gatherings, romantic dinners, or a casual lunch with friends.
+            Located in Opol, just a short drive from Cagayan de Oro City. Perfect for family gatherings, romantic dinners, or a casual lunch with friends.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link 
@@ -250,6 +257,42 @@ export default function Home() {
             >
               Call for Reservations
             </a>
+          </div>
+        </div>
+      </section>
+
+      {/* Map Section */}
+      <section className="py-24 bg-white overflow-hidden">
+        <div className="container mx-auto px-4 md:px-6">
+          <div className="flex flex-col lg:flex-row gap-12 items-center">
+            <div className="w-full lg:w-1/2 space-y-6 text-left">
+              <span className="text-accent font-bold tracking-widest uppercase text-sm">Find Us</span>
+              <h2 className="font-display text-4xl md:text-5xl font-bold text-foreground leading-tight">
+                Located in Opol, Misamis Oriental
+              </h2>
+              <p className="text-lg text-muted-foreground leading-relaxed">
+                Experience the best seafood by the bay. We are conveniently located in Opol, just a short and scenic drive from Cagayan de Oro City.
+              </p>
+              <div className="space-y-4 pt-4">
+                <div className="flex items-start gap-4 p-4 bg-secondary/30 rounded-xl">
+                  <MapPin className="text-primary mt-1" size={24} />
+                  <div>
+                    <h4 className="font-bold text-lg">Address</h4>
+                    <p className="text-muted-foreground font-medium">Butuan - Cagayan de Oro - Iligan Road, Opol, Misamis Oriental</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-4 p-4 bg-secondary/30 rounded-xl">
+                  <Clock className="text-primary mt-1" size={24} />
+                  <div>
+                    <h4 className="font-bold text-lg">Hours</h4>
+                    <p className="text-muted-foreground font-medium">Open Daily: 10:00 AM - 10:00 PM</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="w-full lg:w-1/2 h-[500px] rounded-3xl overflow-hidden shadow-2xl border-4 border-white/50 relative">
+              <AppleMap className="w-full h-full" />
+            </div>
           </div>
         </div>
       </section>
